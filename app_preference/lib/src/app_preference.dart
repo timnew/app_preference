@@ -107,7 +107,7 @@ class AppPreference<T> {
     required T defaultValue,
     required JsonSerializer<T> serializer,
     required JsonDeserializer<T> deserializer,
-  }) : this.rawSerialized(
+  }) : this.customSerialized(
           adaptor: adaptor,
           key: key,
           serializer: wrapJsonSerializer(serializer),
@@ -116,7 +116,7 @@ class AppPreference<T> {
 
   /// Create a new [AppPreference] instance with value type that not directly supported by [adapter] with custom serializer and deserializer.
   /// [serializer] and [deserializer] need to handle the null value properly, which might be returned by [adaptor].
-  AppPreference.rawSerialized({
+  AppPreference.customSerialized({
     required AppPreferenceAdaptor adaptor,
     required String key,
     required RawValueSerializer<T> serializer,
