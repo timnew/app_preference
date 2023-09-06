@@ -1,5 +1,5 @@
 name: app_preference_secure_storage
-description: A new Flutter package project.
+description: secure storage adapter for app_preference
 version: 0.1.0
 homepage: https://github.com/timnew/app_preference
 
