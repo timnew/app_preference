@@ -1,4 +1,4 @@
 ///
-library app_preference_secured_storage;
+library app_preference_secure_storage;
 
 export 'src/secure_storage_adapter.dart';
