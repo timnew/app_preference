@@ -6,6 +6,7 @@ import 'package:mobx/mobx.dart';
 
 import 'contract.dart';
 import 'internal.dart';
+import 'types_alias.dart';
 
 class AppPreference<T> {
   final Logger _logger;
@@ -93,34 +94,36 @@ class AppPreference<T> {
     required T defaultValue,
   }) : this._(
           key,
-          adaptor.read(key, defaultValue),
-          adaptor.createSimpleWriter(key),
+          futureOrNullFallback(adaptor.read(key), defaultValue),
+          adaptor.createDirectWriter(key),
         );
 
   /// Create a new [AppPreference] instance with value type that not directly supported by [adapter]
-  AppPreference.nullableSerialized({
-    required AppPreferenceAdaptor adaptor,
-    required String key,
-    required NullableSerializer<T> serializer,
-    required NullableDeserializer<T> deserializer,
-  }) : this._(
-          key,
-          adaptor.deserializedRead(key, deserializer),
-          adaptor.createSerializedWriter(key, serializer),
-        );
-
+  /// [jsonSerializer] and [jsonDeserializer] will be used to serialize and deserialize the value to/from `Map<String, dynamic>`,
+  /// which later can be convert to/fom JSON string via `jsonEncode` and `jsonDecode`.
   AppPreference.serialized({
     required AppPreferenceAdaptor adaptor,
     required String key,
     required T defaultValue,
-    required Serializer<T> serializer,
-    required Deserializer<T> deserializer,
+    required JsonSerializer<T> serializer,
+    required JsonDeserializer<T> deserializer,
+  }) : this.rawSerialized(
+          adaptor: adaptor,
+          key: key,
+          serializer: wrapJsonSerializer(serializer),
+          deserializer: wrapJsonDeserializer(deserializer, defaultValue),
+        );
+
+  /// Create a new [AppPreference] instance with value type that not directly supported by [adapter] with custom serializer and deserializer.
+  /// [serializer] and [deserializer] need to handle the null value properly, which might be returned by [adaptor].
+  AppPreference.rawSerialized({
+    required AppPreferenceAdaptor adaptor,
+    required String key,
+    required NullableStringSerializer<T> serializer,
+    required NullableStringDeserializer<T> deserializer,
   }) : this._(
           key,
-          adaptor.deserializedRead(
-            key,
-            wrapDeserializer(deserializer, defaultValue),
-          ),
+          adaptor.deserializedRead(key, deserializer),
           adaptor.createSerializedWriter(key, serializer),
         );
 
@@ -128,10 +131,26 @@ class AppPreference<T> {
   AppPreference.memory(
     FutureOr<T> value, {
     String key = 'memory',
-    AsyncValueSetter<T> writeValue = nopAsyncValueSetter,
-  }) : this._(key, value, writeValue);
+    AsyncValueSetter<T> onWrite = nopAsyncValueSetter,
+  }) : this._(key, value, onWrite);
 }
 
+/// Extension methods for [AppPreference]
+/// All methods here works on derived type of [AppPreference]
+///
+/// Example:
+/// ```dart
+/// class MySecret extends AppPreference<String> {
+///   MySecret(SecureStorageAdaptor adaptor): super.direct(
+///     adaptor: adaptor,
+///     key: 'my_secret',
+///     defaultValue: 'i do not know',
+///   );
+/// }
+///
+/// Future<MySecret> createMySecret(SecureStorageAdaptor adaptor) => MySecrete(adaptor).ensuredCreation();
+/// ```
+/// `createMySecret` returns `Future<MySecrete>` instead of `Future<AppPreference<String>>`
 extension AppPreferenceEnsuredExtension<T, AP extends AppPreference<T>> on AP {
   /// Wait until the preference is ready to use.
   /// Could be used as an async factory for [AppPreference].
