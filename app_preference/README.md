@@ -8,6 +8,14 @@ Ever found yourself juggling between [shared_preferences] and [flutter_secure_st
 
 ## Get Started in a Flash 🚀
 
+```
+> flutter pub add shared_preferences app_preference_shared_preferences app_preference_secure_storage
+```
+
+- **shared_preferences:** The core of the library
+- **app_preference_shared_preferences:** Adapter for [shared_preferences]
+- **app_preference_secure_storage:** Adapter for [flutter_secure_storage]
+
 ### Effortless Preferences with [shared_preferences]
 
 ```dart

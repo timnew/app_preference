@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:app_preference/app_preference_plugin_interface.dart';
-
 mixin AppPreferenceAdaptor {
   /// Read a value from the storage that directly supported
   FutureOr<T?> read<T>(String key);
