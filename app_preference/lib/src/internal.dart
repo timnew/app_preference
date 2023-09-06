@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:app_preference/src/types_alias.dart';
+import 'package:app_preference/src/function_types.dart';
 import 'package:flutter/foundation.dart';
 
 import 'contract.dart';
@@ -15,7 +15,7 @@ FutureOr<T> futureOrNullFallback<T>(FutureOr<T?> value, T defaultValue) => value
 
 Future<void> nopAsyncValueSetter(dynamic value) => SynchronousFuture(null);
 
-NullableStringDeserializer<T> wrapJsonDeserializer<T>(
+RawValueDeserializer<T> wrapJsonDeserializer<T>(
   JsonDeserializer<T> deserializer,
   T defaultValue,
 ) =>
@@ -25,7 +25,7 @@ NullableStringDeserializer<T> wrapJsonDeserializer<T>(
             jsonDecode(data) as Map<String, dynamic>,
           );
 
-NullableStringSerializer<T> wrapJsonSerializer<T>(
+RawValueSerializer<T> wrapJsonSerializer<T>(
   JsonSerializer<T> serializer,
 ) =>
     (T value) => jsonEncode(serializer(value));
@@ -36,11 +36,11 @@ extension AdapterExtension on AppPreferenceAdaptor {
 
   AsyncValueSetter<T> createSerializedWriter<T>(
     String key,
-    NullableStringSerializer<T> serializer,
+    RawValueSerializer<T> serializer,
   ) =>
       (T value) => wrapFutureOr(serializerWrite(key, serializer(value)));
 
-  FutureOr<T> deserializedRead<T>(String key, NullableStringDeserializer<T> deserializer) {
+  FutureOr<T> deserializedRead<T>(String key, RawValueDeserializer<T> deserializer) {
     final value = serializerRead(key);
 
     if (value is Future<String?>) {

@@ -5,8 +5,8 @@ import 'package:logging/logging.dart';
 import 'package:mobx/mobx.dart';
 
 import 'contract.dart';
+import 'function_types.dart';
 import 'internal.dart';
-import 'types_alias.dart';
 
 class AppPreference<T> {
   final Logger _logger;
@@ -119,8 +119,8 @@ class AppPreference<T> {
   AppPreference.rawSerialized({
     required AppPreferenceAdaptor adaptor,
     required String key,
-    required NullableStringSerializer<T> serializer,
-    required NullableStringDeserializer<T> deserializer,
+    required RawValueSerializer<T> serializer,
+    required RawValueDeserializer<T> deserializer,
   }) : this._(
           key,
           adaptor.deserializedRead(key, deserializer),
@@ -133,6 +133,58 @@ class AppPreference<T> {
     String key = 'memory',
     AsyncValueSetter<T> onWrite = nopAsyncValueSetter,
   }) : this._(key, value, onWrite);
+
+  /// Create a [Stream] that emits the current value and its future changes.
+  Stream<T> asStream() {
+    late final ReactionDisposer disposer;
+    late final StreamController<T> controller;
+
+    controller = StreamController(
+      onListen: () {
+        disposer = autorun((_) => controller.add(value));
+      },
+      onCancel: () {
+        disposer.call();
+      },
+    );
+
+    return controller.stream;
+  }
+
+  /// Subscribe to value and its future changes.
+  /// [listener] would be notified for current value
+  ///
+  /// A [ReactionDisposer] is returned, which can be used to unsubscribe.
+  ReactionDisposer subscribe(ValueListener<T> listener) => autorun((_) => listener(value));
+
+  /// Subscribe to value's future changes.
+  /// [listener] will be notified for all value changed, but not the current value.
+  ///
+  /// A [ReactionDisposer] is returned, which can be used to unsubscribe.
+  ReactionDisposer subscribeChanges(ValueListener<T> listener) => reaction((_) => value, listener);
+
+  /// [listener] will be notified when [predicate] returns `true`
+  /// Subscription disposes itself after [listener] is called once.
+  ///
+  /// A [ReactionDisposer] is returned, which can be used to unsubscribe.
+  ReactionDisposer notifyWhen(Predict<T> predict, ValueListener<T> listener) =>
+      when((_) => predict(value), () => listener(value));
+
+  /// [Logger] that receives logs from all [AppPreference] instances.
+  static Logger get logger => Logger('AppPreference');
+
+  /// Subscribe to all logs from all [AppPreference] instances.
+  /// Could be useful to bridge [AppPreference] logs to other logging system if app isn't using [Logger].
+  static StreamSubscription<LogRecord> onLog(ValueListener<LogRecord> listener) =>
+      logger.onRecord.listen(listener);
+
+  /// Subscribe to all errors from all [AppPreference] instances.
+  /// Could be useful to bridge [AppPreference] errors to error reporting system if app isn't using [Logger].
+  static StreamSubscription<LogRecord> onError(ErrorListener errorListener) => onLog((log) {
+        if (log.error == null) return;
+
+        errorListener(log.message, log.error!, log.stackTrace);
+      });
 }
 
 /// Extension methods for [AppPreference]

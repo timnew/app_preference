@@ -1,9 +1,5 @@
 import 'dart:async';
 
-import 'package:logging/logging.dart';
-
-final appPreferenceLogger = Logger('AppPreference');
-
 mixin AppPreferenceAdaptor {
   /// Read a value from the storage that directly supported
   FutureOr<T?> read<T>(String key);
