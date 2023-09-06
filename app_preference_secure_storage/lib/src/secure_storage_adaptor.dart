@@ -9,7 +9,7 @@ class SecureStorageAdaptor with AppPreferenceAdaptor {
   const SecureStorageAdaptor(this._storage);
 
   @override
-  Future<T> read<T>(String key, T defaultValue) async {
+  Future<T?> read<T>(String key) async {
     assert(
       () {
         return isSameTypeOrNullable<T, String>();
@@ -17,9 +17,7 @@ class SecureStorageAdaptor with AppPreferenceAdaptor {
       'Unsupported type: $T',
     );
 
-    final result = await _storage.read(key: key) as T?;
-
-    return result ?? defaultValue;
+    return (await _storage.read(key: key)) as T?;
   }
 
   @override

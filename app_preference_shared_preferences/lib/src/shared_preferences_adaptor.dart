@@ -9,7 +9,7 @@ class SharedPreferencesAdaptor with AppPreferenceAdaptor {
   const SharedPreferencesAdaptor(this._prefs);
 
   @override
-  T read<T>(String key, T defaultValue) {
+  T? read<T>(String key) {
     assert(
       () {
         return isSameTypeOrNullable<T, String>() ||
@@ -21,7 +21,7 @@ class SharedPreferencesAdaptor with AppPreferenceAdaptor {
       'Unsupported type: $T',
     );
 
-    return _prefs.get(key) as T? ?? defaultValue;
+    return _prefs.get(key) as T?;
   }
 
   @override
