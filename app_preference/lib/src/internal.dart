@@ -30,7 +30,7 @@ RawValueSerializer<T> wrapJsonSerializer<T>(
 ) =>
     (T value) => jsonEncode(serializer(value));
 
-extension AdapterExtension on AppPreferenceAdaptor {
+extension AdapterExtension on AppPreferenceAdapter {
   AsyncValueSetter<T> createDirectWriter<T>(String key) =>
       (T value) => wrapFutureOr(write(key, value));
 

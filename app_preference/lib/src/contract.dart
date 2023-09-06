@@ -1,6 +1,6 @@
 import 'dart:async';
 
-mixin AppPreferenceAdaptor {
+mixin AppPreferenceAdapter {
   /// Read a value from the storage that directly supported
   FutureOr<T?> read<T>(String key);
 

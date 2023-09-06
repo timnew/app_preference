@@ -23,10 +23,10 @@ import 'package:app_preference/app_preference.dart';
 import 'package:app_preference_shared_preferences/app_preference_shared_preferences.dart';
 
 final SharedPreferences sharedPreferences = getSharedPreference();
-final AppPreferenceAdaptor sharedPreferencesAdaptor = SharedPreferencesAdaptor(sharedPreferences);
+final AppPreferenceAdapter sharedPreferencesAdapter = SharedPreferencesAdapter(sharedPreferences);
 
 final userNamePref = AppPreference<String>.direct(
-  adaptor: sharedPreferencesAdaptor
+  adapter: sharedPreferencesAdapter
   key: 'user_name',
   defaultValue: '<unknown>',
 );
@@ -45,10 +45,10 @@ print(userPref.value); // prints 'my_name'
 import 'package:app_preference_secure_storage/app_preference_secure_storage.dart';
 
 final FlutterSecureStorage secureStorage = getSecureStorage();
-final AppPreferenceAdaptor secureStorageAdaptor = SecureStorageAdaptor(secureStorage)
+final AppPreferenceAdapter secureStorageAdapter = SecureStorageAdapter(secureStorage)
 
 final userTokenPref = AppPreference<String?>.direct(
-  adaptor: secureStorageAdaptor
+  adapter: secureStorageAdapter
   key: 'user_token',
   defaultValue: null,
 );
@@ -81,7 +81,7 @@ class UserTokens {
 }
 
 final userTokenPref = AppPreference<UserTokens>.serialized(
-  adaptor: adaptor
+  adapter: adapter
   key: 'user_tokens',
   defaultValue: UserTokens.empty,
   serializer: (tokens) => tokens.toJson(),
@@ -96,7 +96,7 @@ Given you want to serialize `UserTokens.empty` as `null`, which would remove the
 ```dart
 
 final userTokenPref = AppPreference<UserTokens>.customSerialized(
-  adaptor: adaptor
+  adapter: adapter
   key: 'user_tokens',
   serializer: (UserTokens tokens) {
     if(tokens == UserTokens.empty) {
@@ -122,7 +122,7 @@ final userTokenPref = AppPreference<UserTokens>.customSerialized(
 
 ```dart
 final userTokenPref = AppPreference<String?>.direct(
-  adaptor: secureStorageAdaptor
+  adapter: secureStorageAdapter
   key: 'user_token',
   defaultValue: null,
 );
@@ -142,7 +142,7 @@ print(await userTokenPref.ensuredRead());
 
 ```dart
 final userTokenPref = await AppPreference<String?>.direct(
-  adaptor: secureStorageAdaptor
+  adapter: secureStorageAdapter
   key: 'user_token',
   defaultValue: null,
 ).ensuredCreation();

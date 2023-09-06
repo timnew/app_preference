@@ -89,42 +89,42 @@ class AppPreference<T> {
 
   /// Create a new [AppPreference] instance with value type that directly supported by [adapter]
   AppPreference.direct({
-    required AppPreferenceAdaptor adaptor,
+    required AppPreferenceAdapter adapter,
     required String key,
     required T defaultValue,
   }) : this._(
           key,
-          futureOrNullFallback(adaptor.read(key), defaultValue),
-          adaptor.createDirectWriter(key),
+          futureOrNullFallback(adapter.read(key), defaultValue),
+          adapter.createDirectWriter(key),
         );
 
   /// Create a new [AppPreference] instance with value type that not directly supported by [adapter]
   /// [jsonSerializer] and [jsonDeserializer] will be used to serialize and deserialize the value to/from `Map<String, dynamic>`,
   /// which later can be convert to/fom JSON string via `jsonEncode` and `jsonDecode`.
   AppPreference.serialized({
-    required AppPreferenceAdaptor adaptor,
+    required AppPreferenceAdapter adapter,
     required String key,
     required T defaultValue,
     required JsonSerializer<T> serializer,
     required JsonDeserializer<T> deserializer,
   }) : this.customSerialized(
-          adaptor: adaptor,
+          adapter: adapter,
           key: key,
           serializer: wrapJsonSerializer(serializer),
           deserializer: wrapJsonDeserializer(deserializer, defaultValue),
         );
 
   /// Create a new [AppPreference] instance with value type that not directly supported by [adapter] with custom serializer and deserializer.
-  /// [serializer] and [deserializer] need to handle the null value properly, which might be returned by [adaptor].
+  /// [serializer] and [deserializer] need to handle the null value properly, which might be returned by [adapter].
   AppPreference.customSerialized({
-    required AppPreferenceAdaptor adaptor,
+    required AppPreferenceAdapter adapter,
     required String key,
     required RawValueSerializer<T> serializer,
     required RawValueDeserializer<T> deserializer,
   }) : this._(
           key,
-          adaptor.deserializedRead(key, deserializer),
-          adaptor.createSerializedWriter(key, serializer),
+          adapter.deserializedRead(key, deserializer),
+          adapter.createSerializedWriter(key, serializer),
         );
 
   /// Create a new [AppPreference] instance that cached in memory, could be used for testing.
@@ -193,14 +193,14 @@ class AppPreference<T> {
 /// Example:
 /// ```dart
 /// class MySecret extends AppPreference<String> {
-///   MySecret(SecureStorageAdaptor adaptor): super.direct(
-///     adaptor: adaptor,
+///   MySecret(SecureStorageAdapter adapter): super.direct(
+///     adapter: adapter,
 ///     key: 'my_secret',
 ///     defaultValue: 'i do not know',
 ///   );
 /// }
 ///
-/// Future<MySecret> createMySecret(SecureStorageAdaptor adaptor) => MySecrete(adaptor).ensuredCreation();
+/// Future<MySecret> createMySecret(SecureStorageAdapter adapter) => MySecrete(adapter).ensuredCreation();
 /// ```
 /// `createMySecret` returns `Future<MySecrete>` instead of `Future<AppPreference<String>>`
 extension AppPreferenceEnsuredExtension<T, AP extends AppPreference<T>> on AP {

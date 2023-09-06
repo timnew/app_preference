@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:app_preference/app_preference_plugin_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPreferencesAdaptor with AppPreferenceAdaptor {
+class SharedPreferencesAdapter with AppPreferenceAdapter {
   final SharedPreferences _prefs;
 
-  const SharedPreferencesAdaptor(this._prefs);
+  const SharedPreferencesAdapter(this._prefs);
 
   @override
   T? read<T>(String key) {

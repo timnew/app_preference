@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:app_preference/app_preference_plugin_interface.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class SecureStorageAdaptor with AppPreferenceAdaptor {
+class SecureStorageAdaptor with AppPreferenceAdapter {
   final FlutterSecureStorage _storage;
 
   const SecureStorageAdaptor(this._storage);

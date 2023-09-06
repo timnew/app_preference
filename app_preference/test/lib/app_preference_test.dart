@@ -13,7 +13,7 @@ import '../support/logger_spy.dart';
 import '../support/observable_spy.dart';
 import '../support/test_model.dart';
 
-@GenerateNiceMocks([MockSpec<AppPreferenceAdaptor>()])
+@GenerateNiceMocks([MockSpec<AppPreferenceAdapter>()])
 import 'app_preference_test.mocks.dart';
 
 void main() {
@@ -32,12 +32,12 @@ void main() {
 
     final error = Exception('test error');
 
-    late MockAppPreferenceAdaptor adaptor;
+    late MockAppPreferenceAdapter adapter;
     late Completer<String?> readCompleter;
     late Completer<void> writeCompleter;
 
     setUp(() {
-      adaptor = MockAppPreferenceAdaptor();
+      adapter = MockAppPreferenceAdapter();
       readCompleter = Completer<String?>();
       writeCompleter = Completer<void>();
     });
@@ -46,22 +46,22 @@ void main() {
       late AppPreference<String> pref;
 
       AppPreference<String> createPref(FutureOr<String?> value) {
-        when(adaptor.read<String>(captureAny)).thenAnswer((_) => value);
-        when(adaptor.write(captureAny, captureAny)).thenAnswer((_) => writeCompleter.future);
+        when(adapter.read<String>(captureAny)).thenAnswer((_) => value);
+        when(adapter.write(captureAny, captureAny)).thenAnswer((_) => writeCompleter.future);
 
         return pref = AppPreference<String>.direct(
-          adaptor: adaptor,
+          adapter: adapter,
           key: key,
           defaultValue: strDefault,
         );
       }
 
-      VerificationResult verifyAdaptorRead() => verify(adaptor.read<String>(captureAny));
+      VerificationResult verifyAdapterRead() => verify(adapter.read<String>(captureAny));
 
-      VerificationResult verifyAdaptorWritten() =>
-          verify(adaptor.write<String>(captureAny, captureAny));
+      VerificationResult verifyAdapterWritten() =>
+          verify(adapter.write<String>(captureAny, captureAny));
 
-      void verifyNoAdaptorWritten() => verifyNever(adaptor.write<String>(any, any));
+      void verifyNoAdapterWritten() => verifyNever(adapter.write<String>(any, any));
 
       final loggerSpy = useLoggerSpy();
 
@@ -72,7 +72,7 @@ void main() {
         expect(observableReady.status, FutureStatus.fulfilled);
         expect(pref.value, strValue);
 
-        expect(verifyAdaptorRead().captured.single, key);
+        expect(verifyAdapterRead().captured.single, key);
       });
 
       test('should support sync read fallback to default', () {
@@ -82,7 +82,7 @@ void main() {
         expect(observableReady.status, FutureStatus.fulfilled);
         expect(pref.value, strDefault);
 
-        expect(verifyAdaptorRead().captured.single, key);
+        expect(verifyAdapterRead().captured.single, key);
       });
 
       test('should support async read', () async {
@@ -98,7 +98,7 @@ void main() {
 
         expect(pref.value, strValue);
 
-        expect(verifyAdaptorRead().captured.single, key);
+        expect(verifyAdapterRead().captured.single, key);
       });
 
       test('should support async read fallback to default', () async {
@@ -114,7 +114,7 @@ void main() {
 
         expect(pref.value, strDefault);
 
-        expect(verifyAdaptorRead().captured.single, key);
+        expect(verifyAdapterRead().captured.single, key);
       });
 
       test('should report error when read failed', () async {
@@ -148,9 +148,7 @@ void main() {
 
         expect(observableWriteDone.status, FutureStatus.fulfilled);
 
-        final verification = verify(adaptor.write<String>(captureAny, captureAny));
-        verification.called(1);
-        expect(verification.captured, [key, strNewValue]);
+        expect(verifyAdapterWritten().captured, [key, strNewValue]);
       });
 
       test('should report error when writing failed', () async {
@@ -179,7 +177,7 @@ void main() {
         await pref.writeDone;
 
         expect(
-          verifyAdaptorWritten().captured,
+          verifyAdapterWritten().captured,
           [key, strValue],
         );
 
@@ -187,7 +185,7 @@ void main() {
         await pref.writeDone;
 
         expect(
-          verifyAdaptorWritten().captured,
+          verifyAdapterWritten().captured,
           [key, strNewValue],
         );
       });
@@ -201,14 +199,14 @@ void main() {
         await pref.writeDone;
 
         expect(
-          verifyAdaptorWritten().captured,
+          verifyAdapterWritten().captured,
           [key, strValue],
         );
 
         pref.value = strValue;
         await pref.writeDone;
 
-        verifyNoAdaptorWritten();
+        verifyNoAdapterWritten();
       });
 
       test('should not error if a write is triggered before current one finished', () async {
@@ -225,8 +223,7 @@ void main() {
         await future1;
         await future2;
 
-        final verification = verify(adaptor.write<String>(captureAny, captureAny));
-        expect(verification.captured.last, strNewValue);
+        expect(verifyAdapterWritten().captured.last, strNewValue);
       });
     });
 
@@ -234,12 +231,12 @@ void main() {
       late AppPreference<TestModel> pref;
 
       AppPreference<TestModel> createPref(FutureOr<String?> value) {
-        when(adaptor.serializerRead(captureAny)).thenAnswer((_) => value);
-        when(adaptor.serializerWrite(captureAny, captureAny))
+        when(adapter.serializerRead(captureAny)).thenAnswer((_) => value);
+        when(adapter.serializerWrite(captureAny, captureAny))
             .thenAnswer((_) => writeCompleter.future);
 
         return pref = AppPreference<TestModel>.serialized(
-          adaptor: adaptor,
+          adapter: adapter,
           key: key,
           defaultValue: modelDefault,
           serializer: (model) => model.toJson(),
@@ -247,12 +244,12 @@ void main() {
         );
       }
 
-      VerificationResult verifyAdaptorRead() => verify(adaptor.serializerRead(captureAny));
+      VerificationResult verifyAdapterRead() => verify(adapter.serializerRead(captureAny));
 
-      VerificationResult verifyAdaptorWritten() =>
-          verify(adaptor.serializerWrite(captureAny, captureAny));
+      VerificationResult verifyAdapterWritten() =>
+          verify(adapter.serializerWrite(captureAny, captureAny));
 
-      void verifyNoAdaptorWritten() => verifyNever(adaptor.serializerWrite(any, any));
+      void verifyNoAdapterWritten() => verifyNever(adapter.serializerWrite(any, any));
 
       final loggerSpy = useLoggerSpy();
 
@@ -263,7 +260,7 @@ void main() {
         expect(observableReady.status, FutureStatus.fulfilled);
         expect(pref.value, modelValue);
 
-        expect(verify(adaptor.serializerRead(captureAny)).captured.single, key);
+        expect(verify(adapter.serializerRead(captureAny)).captured.single, key);
       });
 
       test('should support sync read fallback to default', () {
@@ -273,7 +270,7 @@ void main() {
         expect(observableReady.status, FutureStatus.fulfilled);
         expect(pref.value, modelDefault);
 
-        expect(verifyAdaptorRead().captured.single, key);
+        expect(verifyAdapterRead().captured.single, key);
       });
 
       test('should support async read', () async {
@@ -289,7 +286,7 @@ void main() {
 
         expect(pref.value, modelValue);
 
-        expect(verifyAdaptorRead().captured.single, key);
+        expect(verifyAdapterRead().captured.single, key);
       });
 
       test('should support async read fallback to default', () async {
@@ -305,7 +302,7 @@ void main() {
 
         expect(pref.value, modelDefault);
 
-        expect(verifyAdaptorRead().captured.single, key);
+        expect(verifyAdapterRead().captured.single, key);
       });
 
       test('should report error when read failed', () async {
@@ -339,7 +336,7 @@ void main() {
 
         expect(observableWriteDone.status, FutureStatus.fulfilled);
 
-        expect(verifyAdaptorWritten().captured, [key, modelNewJson]);
+        expect(verifyAdapterWritten().captured, [key, modelNewJson]);
       });
 
       test('should report error when writing failed', () async {
@@ -368,7 +365,7 @@ void main() {
         await pref.writeDone;
 
         expect(
-          verifyAdaptorWritten().captured,
+          verifyAdapterWritten().captured,
           [key, modelValueJson],
         );
 
@@ -376,7 +373,7 @@ void main() {
         await pref.writeDone;
 
         expect(
-          verifyAdaptorWritten().captured,
+          verifyAdapterWritten().captured,
           [key, modelNewJson],
         );
       });
@@ -390,14 +387,14 @@ void main() {
         await pref.writeDone;
 
         expect(
-          verifyAdaptorWritten().captured,
+          verifyAdapterWritten().captured,
           [key, modelValueJson],
         );
 
         pref.value = modelValue;
         await pref.writeDone;
 
-        verifyNoAdaptorWritten();
+        verifyNoAdapterWritten();
       });
 
       test('should not error if a write is triggered before current one finished', () async {
@@ -414,7 +411,7 @@ void main() {
         await future1;
         await future2;
 
-        expect(verifyAdaptorWritten().captured.last, modelNewJson);
+        expect(verifyAdapterWritten().captured.last, modelNewJson);
       });
     });
 
