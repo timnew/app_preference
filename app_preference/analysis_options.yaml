@@ -6,3 +6,15 @@ linter:
     sort_unnamed_constructors_first: false # To have Class._() as the first one
     sort_pub_dependencies: false # To group dependencies by type
 
+analyzer:
+  exclude:
+    - '**/*.g.dart'
+    - '**/*.freezed.dart'
+    - 'test/.test_coverage.dart'
+    - 'bin/cache/**'
+    - 'lib/generated_plugin_registrant.dart'
+
+  errors:
+    # Ignore until open issue is resolved
+    # https://github.com/rrousselGit/freezed/issues/488
+    invalid_annotation_target: ignore
