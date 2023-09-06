@@ -10,8 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  app_preference:
-    path: ../app_preference # TODO: change this to public one
+  app_preference: ^0.1.0
   shared_preferences: ^2.2.1
 
 dev_dependencies:
