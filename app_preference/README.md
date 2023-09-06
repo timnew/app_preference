@@ -12,9 +12,9 @@ Ever found yourself juggling between [shared_preferences] and [flutter_secure_st
 > flutter pub add shared_preferences app_preference_shared_preferences app_preference_secure_storage
 ```
 
-- **shared_preferences:** The core of the library
-- **app_preference_shared_preferences:** Adapter for [shared_preferences]
-- **app_preference_secure_storage:** Adapter for [flutter_secure_storage]
+- **[app_preference]:** The core of the library
+- **[app_preference_shared_preferences]:** Adapter for [shared_preferences]
+- **[app_preference_secure_storage]:** Adapter for [flutter_secure_storage]
 
 ### Effortless Preferences with [shared_preferences]
 
@@ -231,8 +231,8 @@ AppPreference.onError((message, error, stackTrace) {
 ```
 
 [app_preference]: https://pub.dev/packages/app_preference
+[app_preference_shared_preferences]: https://pub.dev/packages/app_preference_shared_preferences
+[app_preference_secure_storage]: https://pub.dev/packages/app_preference_secure_storage
 [flutter_secure_storage]: https://pub.dev/packages/futter_secure_storage
 [shared_preferences]: https://pub.dev/packages/shared_preferences
 [logging]: https://pub.dev/packages/logging
-[null object pattern]: https://en.wikipedia.org/wiki/Null_object_pattern
-[mobx]: https://pub.dev/packages/mobx
