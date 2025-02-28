@@ -5,3 +5,10 @@
 ## 0.1.1
 
 - Update dependencies
+
+## 0.2.0
+
+- Support AppPreference 0.2.1
+- Fix lint issues
+- Fix integration with the plugins
+- Fix documentation

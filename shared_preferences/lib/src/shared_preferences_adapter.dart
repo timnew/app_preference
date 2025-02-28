@@ -4,11 +4,14 @@ import 'package:app_preference/app_preference.dart';
 import 'package:app_preference/app_preference_plugin_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Adapter for [SharedPreferences] to be used with [AppPreference].
 class SharedPreferencesAdapter with AppPreferenceAdapter {
   final SharedPreferences _prefs;
 
+  /// Create a new [SharedPreferencesAdapter].
   const SharedPreferencesAdapter(this._prefs);
 
+  /// Read a value from [SharedPreferences].
   @override
   T? read<T>(String key) {
     assert(
@@ -55,9 +58,11 @@ class SharedPreferencesAdapter with AppPreferenceAdapter {
     }
   }
 
+  /// Read a value from [SharedPreferences] using a serializer.
   @override
   String? serializerRead(String key) => _prefs.getString(key);
 
+  /// Write a value to [SharedPreferences] using a serializer.
   @override
   Future<void> serializerWrite(String key, String? value) async {
     if (value == null) {
