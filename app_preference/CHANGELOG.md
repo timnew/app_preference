@@ -6,3 +6,9 @@
 
 - `AppPreference.serialized` handles null gracefully
 - Add `AppPreference.customSerialized` should be used to handle more complex situation such as signature verification
+
+## 0.2.1
+
+- Fix documentation
+- Fix integration with the plugins
+- Fix lint issues

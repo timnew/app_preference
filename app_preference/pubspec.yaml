@@ -2,6 +2,8 @@ name: app_preference
 description: A library that makes accessing shared preferences or secured storage a lot easier. It handles the common use case that reads or write preferences. It also supports read and write serializable complex types in a type-safe way. It also supports listening to the value changes. It exposes its values as mobx observable values, but it can actually works with any state management library.
 homepage: https://github.com/timnew/app_preference
 
+version: 0.2.1
+
 environment:
   sdk: '>=3.1.0 <4.0.0'
   flutter: '>=1.17.0'
