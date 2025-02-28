@@ -1,6 +1,6 @@
 name: app_preference_shared_preferences
 description: shared preferences adapter for app_preference
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/timnew/app_preference
 
 environment:
