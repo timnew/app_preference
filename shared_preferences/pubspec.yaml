@@ -1,6 +1,6 @@
 name: app_preference_shared_preferences
 description: shared preferences adapter for app_preference
-version: 0.1.1
+version: 0.2.0
 homepage: https://github.com/timnew/app_preference
 
 environment:
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  app_preference: ^0.2.0
+  app_preference: ^0.2.1
   shared_preferences: ^2.2.1
 
 dev_dependencies:
