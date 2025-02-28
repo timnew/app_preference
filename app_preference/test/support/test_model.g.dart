@@ -6,12 +6,12 @@ part of 'test_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_TestModel _$$_TestModelFromJson(Map<String, dynamic> json) => _$_TestModel(
+_TestModel _$TestModelFromJson(Map<String, dynamic> json) => _TestModel(
       key: json['key'] as String,
-      value: json['value'] as int,
+      value: (json['value'] as num).toInt(),
     );
 
-Map<String, dynamic> _$$_TestModelToJson(_$_TestModel instance) =>
+Map<String, dynamic> _$TestModelToJson(_TestModel instance) =>
     <String, dynamic>{
       'key': instance.key,
       'value': instance.value,

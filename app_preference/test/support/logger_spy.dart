@@ -53,9 +53,11 @@ LoggerSpy useLoggerSpy() {
 }
 
 extension LogRecordHelper on Iterable<LogRecord> {
-  Iterable<LogRecord> whereFromLogger(String name) => where((record) => record.loggerName == name);
+  Iterable<LogRecord> whereFromLogger(String name) =>
+      where((record) => record.loggerName == name);
 
-  Iterable<LogRecord> whereHasError() => where((record) => record.error != null);
+  Iterable<LogRecord> whereHasError() =>
+      where((record) => record.error != null);
 }
 
 const isLogRecord = TypeMatcher<LogRecord>();
@@ -64,10 +66,12 @@ extension LogRecordTypeMatcherExtension on TypeMatcher<LogRecord> {
   TypeMatcher<LogRecord> havingName(dynamic name) =>
       having((r) => r.loggerName, 'loggerName', name);
 
-  TypeMatcher<LogRecord> havingLevel(dynamic level) => having((r) => r.level, 'level', level);
+  TypeMatcher<LogRecord> havingLevel(dynamic level) =>
+      having((r) => r.level, 'level', level);
 
   TypeMatcher<LogRecord> havingMessage(dynamic message) =>
       having((r) => r.message, 'message', message);
 
-  TypeMatcher<LogRecord> havingError(dynamic error) => having((r) => r.error, 'error', error);
+  TypeMatcher<LogRecord> havingError(dynamic error) =>
+      having((r) => r.error, 'error', error);
 }

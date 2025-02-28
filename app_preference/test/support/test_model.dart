@@ -5,7 +5,7 @@ part 'test_model.freezed.dart';
 part 'test_model.g.dart';
 
 @freezed
-class TestModel with _$TestModel {
+abstract class TestModel with _$TestModel {
   const TestModel._();
 
   const factory TestModel({
@@ -15,7 +15,8 @@ class TestModel with _$TestModel {
 
   static const empty = TestModel(key: '', value: 0);
 
-  factory TestModel.fromJson(Map<String, dynamic> json) => _$TestModelFromJson(json);
+  factory TestModel.fromJson(Map<String, dynamic> json) =>
+      _$TestModelFromJson(json);
 
   String toJsonString() => jsonEncode(toJson());
 

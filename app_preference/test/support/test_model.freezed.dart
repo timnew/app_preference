@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,94 +10,73 @@ part of 'test_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-TestModel _$TestModelFromJson(Map<String, dynamic> json) {
-  return _TestModel.fromJson(json);
-}
 
 /// @nodoc
 mixin _$TestModel {
-  String get key => throw _privateConstructorUsedError;
-  int get value => throw _privateConstructorUsedError;
+  String get key;
+  int get value;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $TestModelCopyWith<TestModel> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $TestModelCopyWith<$Res> {
-  factory $TestModelCopyWith(TestModel value, $Res Function(TestModel) then) =
-      _$TestModelCopyWithImpl<$Res, TestModel>;
-  @useResult
-  $Res call({String key, int value});
-}
-
-/// @nodoc
-class _$TestModelCopyWithImpl<$Res, $Val extends TestModel>
-    implements $TestModelCopyWith<$Res> {
-  _$TestModelCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of TestModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $TestModelCopyWith<TestModel> get copyWith =>
+      _$TestModelCopyWithImpl<TestModel>(this as TestModel, _$identity);
+
+  /// Serializes this TestModel to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? key = null,
-    Object? value = null,
-  }) {
-    return _then(_value.copyWith(
-      key: null == key
-          ? _value.key
-          : key // ignore: cast_nullable_to_non_nullable
-              as String,
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is TestModel &&
+            (identical(other.key, key) || other.key == key) &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, key, value);
+
+  @override
+  String toString() {
+    return 'TestModel(key: $key, value: $value)';
   }
 }
 
 /// @nodoc
-abstract class _$$_TestModelCopyWith<$Res> implements $TestModelCopyWith<$Res> {
-  factory _$$_TestModelCopyWith(
-          _$_TestModel value, $Res Function(_$_TestModel) then) =
-      __$$_TestModelCopyWithImpl<$Res>;
-  @override
+abstract mixin class $TestModelCopyWith<$Res> {
+  factory $TestModelCopyWith(TestModel value, $Res Function(TestModel) _then) =
+      _$TestModelCopyWithImpl;
   @useResult
   $Res call({String key, int value});
 }
 
 /// @nodoc
-class __$$_TestModelCopyWithImpl<$Res>
-    extends _$TestModelCopyWithImpl<$Res, _$_TestModel>
-    implements _$$_TestModelCopyWith<$Res> {
-  __$$_TestModelCopyWithImpl(
-      _$_TestModel _value, $Res Function(_$_TestModel) _then)
-      : super(_value, _then);
+class _$TestModelCopyWithImpl<$Res> implements $TestModelCopyWith<$Res> {
+  _$TestModelCopyWithImpl(this._self, this._then);
 
+  final TestModel _self;
+  final $Res Function(TestModel) _then;
+
+  /// Create a copy of TestModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? key = null,
     Object? value = null,
   }) {
-    return _then(_$_TestModel(
+    return _then(_self.copyWith(
       key: null == key
-          ? _value.key
+          ? _self.key
           : key // ignore: cast_nullable_to_non_nullable
               as String,
       value: null == value
-          ? _value.value
+          ? _self.value
           : value // ignore: cast_nullable_to_non_nullable
               as int,
     ));
@@ -105,63 +85,87 @@ class __$$_TestModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_TestModel extends _TestModel {
-  const _$_TestModel({required this.key, required this.value}) : super._();
-
-  factory _$_TestModel.fromJson(Map<String, dynamic> json) =>
-      _$$_TestModelFromJson(json);
+class _TestModel extends TestModel {
+  const _TestModel({required this.key, required this.value}) : super._();
+  factory _TestModel.fromJson(Map<String, dynamic> json) =>
+      _$TestModelFromJson(json);
 
   @override
   final String key;
   @override
   final int value;
 
+  /// Create a copy of TestModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'TestModel(key: $key, value: $value)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$TestModelCopyWith<_TestModel> get copyWith =>
+      __$TestModelCopyWithImpl<_TestModel>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$TestModelToJson(
+      this,
+    );
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_TestModel &&
+            other is _TestModel &&
             (identical(other.key, key) || other.key == key) &&
             (identical(other.value, value) || other.value == value));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, key, value);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$_TestModelCopyWith<_$_TestModel> get copyWith =>
-      __$$_TestModelCopyWithImpl<_$_TestModel>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_TestModelToJson(
-      this,
-    );
+  String toString() {
+    return 'TestModel(key: $key, value: $value)';
   }
 }
 
-abstract class _TestModel extends TestModel {
-  const factory _TestModel(
-      {required final String key, required final int value}) = _$_TestModel;
-  const _TestModel._() : super._();
-
-  factory _TestModel.fromJson(Map<String, dynamic> json) =
-      _$_TestModel.fromJson;
-
+/// @nodoc
+abstract mixin class _$TestModelCopyWith<$Res>
+    implements $TestModelCopyWith<$Res> {
+  factory _$TestModelCopyWith(
+          _TestModel value, $Res Function(_TestModel) _then) =
+      __$TestModelCopyWithImpl;
   @override
-  String get key;
-  @override
-  int get value;
-  @override
-  @JsonKey(ignore: true)
-  _$$_TestModelCopyWith<_$_TestModel> get copyWith =>
-      throw _privateConstructorUsedError;
+  @useResult
+  $Res call({String key, int value});
 }
+
+/// @nodoc
+class __$TestModelCopyWithImpl<$Res> implements _$TestModelCopyWith<$Res> {
+  __$TestModelCopyWithImpl(this._self, this._then);
+
+  final _TestModel _self;
+  final $Res Function(_TestModel) _then;
+
+  /// Create a copy of TestModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? key = null,
+    Object? value = null,
+  }) {
+    return _then(_TestModel(
+      key: null == key
+          ? _self.key
+          : key // ignore: cast_nullable_to_non_nullable
+              as String,
+      value: null == value
+          ? _self.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+// dart format on

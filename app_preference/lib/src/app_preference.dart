@@ -8,6 +8,7 @@ import 'contract.dart';
 import 'function_types.dart';
 import 'internal.dart';
 
+/// An observable value holder that can be used to store and retrieve app preferences.
 class AppPreference<T> {
   final Logger _logger;
   final Atom _atom;

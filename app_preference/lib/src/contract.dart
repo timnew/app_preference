@@ -5,11 +5,11 @@ mixin AppPreferenceAdapter {
   FutureOr<T?> read<T>(String key);
 
   /// Write a value to the storage that directly supported
-  FutureOr<void> write<T>(String key, T value);
+  Future<void>? write<T>(String key, T value);
 
   /// Read string or null, used by serializer
   FutureOr<String?> serializerRead(String key) => read(key);
 
   /// Write string or null, used by serializer
-  FutureOr<void> serializerWrite(String key, String? value) => write(key, value);
+  Future<void>? serializerWrite(String key, String? value) => write(key, value);
 }
