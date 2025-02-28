@@ -4,6 +4,7 @@ import 'package:app_preference/app_preference.dart';
 import 'package:app_preference/app_preference_plugin_utils.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+/// Adapter for [FlutterSecureStorage] to be used with [AppPreference].
 class SecureStorageAdapter with AppPreferenceAdapter {
   final FlutterSecureStorage _storage;
 
