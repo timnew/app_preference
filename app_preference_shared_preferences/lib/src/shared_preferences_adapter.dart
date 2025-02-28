@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:app_preference/app_preference_plugin_interface.dart';
+import 'package:app_preference/app_preference.dart';
+import 'package:app_preference/app_preference_plugin_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesAdapter with AppPreferenceAdapter {

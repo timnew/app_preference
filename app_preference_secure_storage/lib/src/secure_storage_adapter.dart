@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:app_preference/app_preference_plugin_interface.dart';
+import 'package:app_preference/app_preference.dart';
+import 'package:app_preference/app_preference_plugin_utils.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SecureStorageAdapter with AppPreferenceAdapter {
@@ -29,6 +30,6 @@ class SecureStorageAdapter with AppPreferenceAdapter {
       'Unsupported type: $T',
     );
 
-    return _storage.write(key: key, value: value as String?);
+    await _storage.write(key: key, value: value as String?);
   }
 }
