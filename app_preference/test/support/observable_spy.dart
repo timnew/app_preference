@@ -15,4 +15,5 @@ class ObservableSpy<T> with IterableMixin<T> {
   Iterator<T> get iterator => changes.iterator;
 }
 
-ObservableSpy<T> useObservableSpy<T>(ValueGetter<T> getValue) => ObservableSpy<T>(getValue);
+ObservableSpy<T> useObservableSpy<T>(ValueGetter<T> getValue) =>
+    ObservableSpy<T>(getValue);

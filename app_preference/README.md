@@ -69,7 +69,7 @@ class UserTokens {
   const UserTokens(this.idToken, this.accessToken, this.refreshToken);
 
   factory UserTokens.fromJson(Map<String, dynamic> json) => ....
-  Map<String, dynamic>  toJson() => ....
+  Map<String, dynamic> toJson() => ....
 
   @override
   bool operator ==(dynamic other) => ...
@@ -89,11 +89,19 @@ final userTokenPref = AppPreference<UserTokens>.serialized(
 );
 ```
 
+**NOTICE:**
+
+By given `defaultValue`:
+
+- when the library is reading the value from adapter, if the value is not found, it will return the `defaultValue` instead.
+- when the library is writing the value to adapter, if the value is the same as `defaultValue`, it will write `null` to adapter, instead of serializing the `defaultValue`.
+
 ### Serialize Like a Pro 🎩
 
 Given you want to serialize `UserTokens.empty` as `null`, which would remove the stored value.
 
 ```dart
+const dataSigner = createDataSigner() // Create a data signer that can user to create a signature for the data or verified it
 
 final userTokenPref = AppPreference<UserTokens>.customSerialized(
   adapter: adapter
@@ -102,14 +110,34 @@ final userTokenPref = AppPreference<UserTokens>.customSerialized(
     if(tokens == UserTokens.empty) {
       return null;
     } else {
-      return jsonEncode(tokens.toJson());
+      final data = tokens.toJson();
+      final signature = dataSigner.sign(data);
+      return jsonEncode({ "data": data, "signature": signature });
     }
   },
   deserializer: (String? data) {
     if(data == null) {
       return UserTokens.empty;
-    } else {
-      return UserTokens.fromJson(jsonDecode(data!) as Map<String, dynamic>);
+    }
+
+    try {
+      final decoded = jsonDecode(data!) as Map<String, dynamic>;
+
+      if (decoded case { "data": final Map<String, dynamic> data, "signature": final String signature }) {
+        final userTokens = UserTokens.fromJson(data);
+        if(!dataSigner.verify(userTokens, signature)) {
+          throw Exception("Signature doesn't match");
+        }
+
+        return userTokens;
+      }
+      else {
+        throw Exception('Could not parse user tokens');
+      }
+    } catch (ex) {
+      print('Failed to deserialize user tokens: $ex');
+
+      return UserTokens.empty;
     }
   }
 );
@@ -118,7 +146,7 @@ final userTokenPref = AppPreference<UserTokens>.customSerialized(
 
 ## Unleash the Power ⚡
 
-### Async? No Sweat!
+### Async? No Sweat
 
 ```dart
 final userTokenPref = AppPreference<String?>.direct(
@@ -138,7 +166,7 @@ print(userTokenPref.value); // Value is loaded
 print(await userTokenPref.ensuredRead());
 ```
 
-### Ensured async createion
+### Ensured async creation
 
 ```dart
 final userTokenPref = await AppPreference<String?>.direct(
@@ -183,7 +211,7 @@ class UserNameWidget extends StatelessWidget {
 }
 ```
 
-### The magic of reaction!
+### The magic of reaction
 
 ```dart
 late final AppPreference<UserSessions> _userSessionPref;
