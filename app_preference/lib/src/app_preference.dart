@@ -110,7 +110,7 @@ class AppPreference<T> {
   }) : this.customSerialized(
           adapter: adapter,
           key: key,
-          serializer: wrapJsonSerializer(serializer),
+          serializer: wrapJsonSerializer(serializer, defaultValue),
           deserializer: wrapJsonDeserializer(deserializer, defaultValue),
         );
 
@@ -155,13 +155,15 @@ class AppPreference<T> {
   /// [listener] would be notified for current value
   ///
   /// A [ReactionDisposer] is returned, which can be used to unsubscribe.
-  ReactionDisposer subscribe(ValueListener<T> listener) => autorun((_) => listener(value));
+  ReactionDisposer subscribe(ValueListener<T> listener) =>
+      autorun((_) => listener(value));
 
   /// Subscribe to value's future changes.
   /// [listener] will be notified for all value changed, but not the current value.
   ///
   /// A [ReactionDisposer] is returned, which can be used to unsubscribe.
-  ReactionDisposer subscribeChanges(ValueListener<T> listener) => reaction((_) => value, listener);
+  ReactionDisposer subscribeChanges(ValueListener<T> listener) =>
+      reaction((_) => value, listener);
 
   /// [listener] will be notified when [predicate] returns `true`
   /// Subscription disposes itself after [listener] is called once.
@@ -175,12 +177,14 @@ class AppPreference<T> {
 
   /// Subscribe to all logs from all [AppPreference] instances.
   /// Could be useful to bridge [AppPreference] logs to other logging system if app isn't using [Logger].
-  static StreamSubscription<LogRecord> onLog(ValueListener<LogRecord> listener) =>
+  static StreamSubscription<LogRecord> onLog(
+          ValueListener<LogRecord> listener) =>
       logger.onRecord.listen(listener);
 
   /// Subscribe to all errors from all [AppPreference] instances.
   /// Could be useful to bridge [AppPreference] errors to error reporting system if app isn't using [Logger].
-  static StreamSubscription<LogRecord> onError(ErrorListener errorListener) => onLog((log) {
+  static StreamSubscription<LogRecord> onError(ErrorListener errorListener) =>
+      onLog((log) {
         if (log.error == null) return;
 
         errorListener(log.message, log.error!, log.stackTrace);

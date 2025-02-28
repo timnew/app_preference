@@ -47,7 +47,8 @@ void main() {
 
       AppPreference<String> createPref(FutureOr<String?> value) {
         when(adapter.read<String>(captureAny)).thenAnswer((_) => value);
-        when(adapter.write(captureAny, captureAny)).thenAnswer((_) => writeCompleter.future);
+        when(adapter.write(captureAny, captureAny))
+            .thenAnswer((_) => writeCompleter.future);
 
         return pref = AppPreference<String>.direct(
           adapter: adapter,
@@ -56,12 +57,14 @@ void main() {
         );
       }
 
-      VerificationResult verifyAdapterRead() => verify(adapter.read<String>(captureAny));
+      VerificationResult verifyAdapterRead() =>
+          verify(adapter.read<String>(captureAny));
 
       VerificationResult verifyAdapterWritten() =>
           verify(adapter.write<String>(captureAny, captureAny));
 
-      void verifyNoAdapterWritten() => verifyNever(adapter.write<String>(any, any));
+      void verifyNoAdapterWritten() =>
+          verifyNever(adapter.write<String>(any, any));
 
       final loggerSpy = useLoggerSpy();
 
@@ -209,7 +212,9 @@ void main() {
         verifyNoAdapterWritten();
       });
 
-      test('should not error if a write is triggered before current one finished', () async {
+      test(
+          'should not error if a write is triggered before current one finished',
+          () async {
         createPref(strDefault);
 
         pref.value = strValue;
@@ -244,12 +249,14 @@ void main() {
         );
       }
 
-      VerificationResult verifyAdapterRead() => verify(adapter.serializerRead(captureAny));
+      VerificationResult verifyAdapterRead() =>
+          verify(adapter.serializerRead(captureAny));
 
       VerificationResult verifyAdapterWritten() =>
           verify(adapter.serializerWrite(captureAny, captureAny));
 
-      void verifyNoAdapterWritten() => verifyNever(adapter.serializerWrite(any, any));
+      void verifyNoAdapterWritten() =>
+          verifyNever(adapter.serializerWrite(any, any));
 
       final loggerSpy = useLoggerSpy();
 
@@ -339,6 +346,23 @@ void main() {
         expect(verifyAdapterWritten().captured, [key, modelNewJson]);
       });
 
+      test('should write null when the default value is given', () async {
+        createPref(modelValueJson);
+
+        pref.value = modelDefault;
+
+        final observableWriteDone = ObservableFuture(pref.writeDone);
+
+        expect(observableWriteDone.status, FutureStatus.pending);
+
+        writeCompleter.complete();
+        await pref.writeDone;
+
+        expect(observableWriteDone.status, FutureStatus.fulfilled);
+
+        expect(verifyAdapterWritten().captured, [key, null]);
+      });
+
       test('should report error when writing failed', () async {
         createPref(modelValueJson);
 
@@ -397,7 +421,9 @@ void main() {
         verifyNoAdapterWritten();
       });
 
-      test('should not error if a write is triggered before current one finished', () async {
+      test(
+          'should not error if a write is triggered before current one finished',
+          () async {
         createPref(null);
 
         pref.value = modelValue;
@@ -423,7 +449,9 @@ void main() {
       });
 
       test("it should set initial async value", () async {
-        final pref = await AppPreference<String>.memory(Future.value(strDefault)).ensuredCreation();
+        final pref =
+            await AppPreference<String>.memory(Future.value(strDefault))
+                .ensuredCreation();
 
         expect(pref.value, strDefault);
       });

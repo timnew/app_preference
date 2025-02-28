@@ -9,9 +9,10 @@ import 'contract.dart';
 Future<T> wrapFutureOr<T>(FutureOr<T> value) =>
     value is Future<T> ? value : SynchronousFuture(value);
 
-FutureOr<T> futureOrNullFallback<T>(FutureOr<T?> value, T defaultValue) => value is Future<T?>
-    ? value.then((value) => value ?? defaultValue) as FutureOr<T>
-    : value ?? defaultValue;
+FutureOr<T> futureOrNullFallback<T>(FutureOr<T?> value, T defaultValue) =>
+    value is Future<T?>
+        ? value.then((value) => value ?? defaultValue) as FutureOr<T>
+        : value ?? defaultValue;
 
 Future<void> nopAsyncValueSetter(dynamic value) => SynchronousFuture(null);
 
@@ -27,8 +28,9 @@ RawValueDeserializer<T> wrapJsonDeserializer<T>(
 
 RawValueSerializer<T> wrapJsonSerializer<T>(
   JsonSerializer<T> serializer,
+  T defaultValue,
 ) =>
-    (T value) => jsonEncode(serializer(value));
+    (T value) => value == defaultValue ? null : jsonEncode(serializer(value));
 
 extension AdapterExtension on AppPreferenceAdapter {
   AsyncValueSetter<T> createDirectWriter<T>(String key) =>
@@ -40,7 +42,8 @@ extension AdapterExtension on AppPreferenceAdapter {
   ) =>
       (T value) => wrapFutureOr(serializerWrite(key, serializer(value)));
 
-  FutureOr<T> deserializedRead<T>(String key, RawValueDeserializer<T> deserializer) {
+  FutureOr<T> deserializedRead<T>(
+      String key, RawValueDeserializer<T> deserializer) {
     final value = serializerRead(key);
 
     if (value is Future<String?>) {
